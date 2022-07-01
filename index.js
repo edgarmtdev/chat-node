@@ -1,5 +1,11 @@
-import app from './src/app';
+import app from './src/app'
+import { port } from './src/config';
+import { connection } from './src/config/db';
 
-app.listen(4000, () => {
-    console.log('Listen in port 4000');
+connection()
+
+const PORT = port || 4000
+
+app.listen(PORT, () => {
+    console.log(`Listening on: http://localhost:${PORT}`);
 })
