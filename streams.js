@@ -27,7 +27,7 @@ server.on('request', (req, res) => {
     //     }
     // })
 
-    const file = fs.createReadStream('./file.txt')
+    const file = fs.createReadStream('./static/file.txt')
     file.pipe(res)
 })
 

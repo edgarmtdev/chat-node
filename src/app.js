@@ -3,12 +3,22 @@ import morgan from 'morgan'
 import pkg from '../package.json'
 
 const app = express()
-app.set('pkg', pkg)
+
+// Routes
+import auth from './routes/auth'
+import user from './routes/user'
 
 //Midlewares
 app.use(morgan('dev'))
 app.use(express.json())
 
+
+// Use Routes
+auth(app)
+user(app)
+
+// Project details
+app.set('pkg', pkg)
 app.get('/', (req, res) => {
     const data = {
         name: app.get('pkg').name,
