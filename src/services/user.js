@@ -1,3 +1,4 @@
+import hasErrors from '../helpers/errors'
 import UserModel from '../models/user'
 
 export default class User {
@@ -9,7 +10,7 @@ export default class User {
                 user
             }
         } catch (error) {
-            console.log(error)
+           return hasErrors(error)
         }
     }
 }
