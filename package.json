@@ -11,6 +11,7 @@
     "dev": "cross-env NODE_ENV=development nodemon --exec npx babel-node ./index.js"
   },
   "dependencies": {
+    "aws-sdk": "^2.1169.0",
     "babel-cli": "^6.26.0",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
@@ -21,6 +22,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.3",
     "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "passport": "^0.6.0",
     "passport-facebook": "^3.0.0",
     "passport-github2": "^0.1.12",

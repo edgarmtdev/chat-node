@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import config from '../'
+import { config } from '../'
 
 const { dbUsername, dbPassword, dbHost, dbName } = config
 

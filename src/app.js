@@ -7,6 +7,7 @@ const app = express()
 // Routes
 import auth from './routes/auth'
 import user from './routes/user'
+import files from './routes/files'
 
 //Midlewares
 app.use(morgan('dev'))
@@ -16,6 +17,7 @@ app.use(express.json())
 // Use Routes
 auth(app)
 user(app)
+files(app)
 
 // Project details
 app.set('pkg', pkg)

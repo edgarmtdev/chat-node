@@ -1,7 +1,7 @@
 import hasErrors from '../helpers/errors'
 import UserModel from '../models/user'
 
-export default class User {
+class User {
     async create(data) {
         try {
             const user = await UserModel.create(data)
@@ -14,3 +14,5 @@ export default class User {
         }
     }
 }
+
+export default User
