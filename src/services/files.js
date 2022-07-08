@@ -1,18 +1,43 @@
 import AWS from 'aws-sdk'
+import path from 'path'
+import { v4 } from 'uuid'
 import { config } from '../config'
 const { awsBucketName } = config
 
 class Files {
+
     constructor() {
         this.s3 = new AWS.S3()
     }
-    async download() { }
+
+    async download(fileName) {
+        try {
+            const result = await this.s3.getObject({
+                Key: fileName,
+                Bucket: awsBucketName
+            }).promise()
+            return {
+                success: true,
+                message: 'File downloaded successfully',
+                data: result
+            }
+        } catch (err) {
+            console.log(err)
+            return {
+                success: false,
+                message: "An error ocurred"
+            }
+        }
+    }
 
     async upload(fileName, file) {
         try {
+            const ext = path.extname(fileName)
+            const Key = v4() + ext
+
             const result = await this.s3.upload({
                 Bucket: awsBucketName,
-                Key: fileName,
+                Key,
                 Body: file
             }).promise()
             return {
@@ -21,16 +46,30 @@ class Files {
                 key: result.Key,
                 location: result.Location
             }
-        } catch (err) {
+        } catch (error) {
             console.log(error)
-            return { 
-                success: false, 
-                message: "An error ocurred" 
+            return {
+                success: false,
+                message: "An error ocurred"
             }
         }
     }
 
-    async delete() { }
+    async delete(fileName) {
+        try {
+            await this.s3.deleteObject({
+                Bucket: awsBucketName,
+                Key: fileName,
+            }).promise()
+            return {
+                success: true,
+                message: 'File deleted successfully',
+                file: fileName,
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 export default Files
