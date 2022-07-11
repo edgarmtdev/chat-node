@@ -12,9 +12,12 @@ function files(app) {
         const { fileName } = req.params
         const result = await filesService.download(fileName)
 
-        if (result.success) return res.end(result.data.Body)
+        if (result.success) {
+            result.data.pipe(res)
+        } else {
+            return res.status(400).json(result)
+        }
 
-        return res.status(400).json(result)
     })
 
     router.post('/upload', async (req, res) => {

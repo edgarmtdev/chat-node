@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk'
+import fs from 'fs'
 import path from 'path'
 import { v4 } from 'uuid'
 import { config } from '../config'
@@ -12,10 +13,11 @@ class Files {
 
     async download(fileName) {
         try {
-            const result = await this.s3.getObject({
+            const result = this.s3.getObject({
                 Key: fileName,
                 Bucket: awsBucketName
-            }).promise()
+            }).createReadStream()
+
             return {
                 success: true,
                 message: 'File downloaded successfully',
