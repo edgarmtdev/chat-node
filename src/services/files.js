@@ -1,5 +1,4 @@
 import AWS from 'aws-sdk'
-import fs from 'fs'
 import path from 'path'
 import { v4 } from 'uuid'
 import { config } from '../config'

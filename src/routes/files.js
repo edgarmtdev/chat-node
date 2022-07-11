@@ -1,6 +1,6 @@
 import busboy from 'busboy'
 import { Router } from 'express'
-import upload from '../middlewares/upload'
+import upload from '../middlewares/files/upload'
 import Files from '../services/files'
 
 function files(app) {
