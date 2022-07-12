@@ -1,5 +1,6 @@
 import express from 'express'
 import morgan from 'morgan'
+import cors from 'cors'
 import pkg from '../package.json'
 
 const app = express()
@@ -9,10 +10,18 @@ import auth from './routes/auth'
 import user from './routes/user'
 import files from './routes/files'
 
+//cors
+app.use(cors({
+    origin: [
+        'http://localhost:3000',
+        'http://127.0.0.1:5500'
+    ],
+    credentials: true
+}))
+
 //Midlewares
 app.use(morgan('dev'))
 app.use(express.json())
-
 
 // Use Routes
 auth(app)

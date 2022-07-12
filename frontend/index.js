@@ -1,0 +1,12 @@
+const socket  = io.connect('http://localhost:4000')
+const login = document.getElementById('login')
+
+login.addEventListener('submit', (event) => {
+    event.preventDefault()
+    const { username } = event.target
+    socket.emit('active', username.value)
+})
+
+socket.on('user connected', (users) => {
+    console.log(users)
+})
