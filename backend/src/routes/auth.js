@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import Auth from '../services/auth'
+import setCookies from '../helpers/authentication/cookies'
 
 export default function auth(app) {
     const router = Router()
@@ -8,20 +9,21 @@ export default function auth(app) {
 
     router.post('/signin', async (req, res) => {
         const result = await authService.signIn(req.body)
-        console.log(result);
-        return res.cookie('token', result.token, {
-            httpOnly: true,
-            secure: false,
-            expires: new Date(new Date().setDate(new Date().getDate() + 7)),
-            sameSite: 'none'
-        }).json(result)
+        if (result.success) {
+            const { token, data } = result
+            return setCookies(res, token, data)
+        }
+        return res.json(result)
     })
 
     router.post('/register', async (req, res) => {
         const result = await authService.register(req.body)
-        return res
-            .status(result.code ? result.code : 200)
-            .json(result)
+        console.log(result);
+        if (result.success) {
+            const { token, data } = result
+            return setCookies(res, token, data)
+        }
+        return res.json(result)
     })
 
 }

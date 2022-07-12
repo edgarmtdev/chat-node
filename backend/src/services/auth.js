@@ -18,7 +18,7 @@ class Auth {
         return await bcrypt.compare(password, encrypted)
     }
 
-    async #getToken(data) {
+    #getToken(data) {
         const token = jwt.sign(data, config.jwtSecret, {
             expiresIn: "2d"
         })
@@ -48,14 +48,13 @@ class Auth {
 
             if (!success) return {
                 success: false,
-                message: 'No user found'
+                message: 'User not found'
             }
 
             const compare = await this.#compare(password, user.password)
-            if (compare) {
-                const result = this.#buildUserData(user)
-                return result
-            }
+            if (compare) return this.#buildUserData(user)
+
+            return result
 
         } catch (error) {
             return error
@@ -67,10 +66,15 @@ class Auth {
             if (data && data.password) {
                 data.password = await this.#encrypt(data.password)
             }
-            const user = await this.userService.create(data)
-            return user
-        } catch (error) {
+            const result = await this.userService.create(data)
+            console.log(result);
 
+            if (result.success) return this.#buildUserData(result.user)
+
+            return result
+
+        } catch (error) {
+            return error
         }
     }
 }

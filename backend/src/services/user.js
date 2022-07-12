@@ -6,10 +6,12 @@ class User {
     async getByEmail(email) {
         try {
             const userFound = await UserModel.findOne({ email })
-            return {
+            if (userFound) return {
                 success: true,
-                user: userFound 
+                user: userFound
             }
+
+            return { success: false }
         } catch (error) {
             console.log(error);
         }

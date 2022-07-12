@@ -1,7 +1,7 @@
 import app from './src/app'
 import { config } from './src/config'
 import { connection } from './src/config/db'
-import socketConnection from './libs/socket'
+import socketConnection from './src/libs/socket'
 import chat from './src/routes/chat'
 
 connection()
