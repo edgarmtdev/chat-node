@@ -1,8 +1,8 @@
 import app from './src/app'
-import { config } from './src/config';
-import { connection } from './src/config/db';
+import { config } from './src/config'
+import { connection } from './src/config/db'
 import socketConnection from './libs/socket'
-import Chat from './src/services/chat';
+import chat from './src/routes/chat'
 
 connection()
 
@@ -12,5 +12,6 @@ const server = app.listen(PORT, () => {
     console.log(`Listening on: http://localhost:${PORT}`);
 })
 
+// socket.io
 const io = socketConnection(server)
-new Chat(io)
+chat(app, io)
