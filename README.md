@@ -7,6 +7,7 @@
 ## Directories
 
 backend -> logic of application
+
 frontend -> ui for functions testing 
 
 ## Getting Started
