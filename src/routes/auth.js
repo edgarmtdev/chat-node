@@ -8,7 +8,13 @@ export default function auth(app) {
 
     router.post('/signin', async (req, res) => {
         const result = await authService.signIn(req.body)
-        return res.json(result)
+        console.log(result);
+        return res.cookie('token', result.token, {
+            httpOnly: true,
+            secure: false,
+            expires: new Date(new Date().setDate(new Date().getDate() + 7)),
+            sameSite: 'none'
+        }).json(result)
     })
 
     router.post('/register', async (req, res) => {
