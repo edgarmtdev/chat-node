@@ -7,15 +7,16 @@
 ## Directories
 
 backend -> logic of application
+
 frontend -> ui for functions testing 
 
-## Getting Started
+## Getting Started to Backend
 
 How first step clone the repository
 ```
 git clone https://github.com/edgarmontielt/chat-node.git
 ```
-Install dependencies and node_modules
+Install dependencies and node_modules in backend/ route
 ```bash
 npm install
 ```
