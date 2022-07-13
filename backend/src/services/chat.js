@@ -1,4 +1,4 @@
-const users = []
+let users = []
 const messages = []
 
 class Chat {
@@ -7,12 +7,19 @@ class Chat {
         this.io.on('connection', (socket) => {
             console.log('A user connected')
             socket.on('active', (data) => {
-                users.push(data)
+                socket.idUser = data
+                users.push({
+                    idUser: data,
+                    idSocket: socket.id
+                })
+                console.log(users);
                 io.emit('user connected', users)
             })
 
             socket.on('disconnect', () => {
-                users.pop()
+                console.log('Disconnect');
+                users = users.filter(user => user.idUser !== socket.idUser)
+                console.log(users)
                 io.emit('user disconnected', users)
             })
 

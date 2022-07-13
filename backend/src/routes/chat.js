@@ -1,12 +1,10 @@
-import { Router } from "express"
 import Chat from "../services/chat"
+import socketConnection from '../libs/socket'
 
-function chat(app, io) {
-    const router = Router()
-    app.use('/api/chats', router)
-
+function chat(server) {
+    // socket.io
+    const io = socketConnection(server)
     new Chat(io)
-
 }
 
 export default chat
