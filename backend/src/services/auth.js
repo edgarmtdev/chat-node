@@ -77,6 +77,10 @@ class Auth {
             return error
         }
     }
+
+    static validateToken(token) {
+        return jwt.verify(token, config.jwtSecret)
+    }
 }
 
 export default Auth

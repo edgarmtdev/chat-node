@@ -1,3 +1,5 @@
+import cookie from 'cookie'
+import Auth from './auth'
 let users = []
 const messages = []
 
@@ -7,6 +9,9 @@ class Chat {
         this.io.on('connection', (socket) => {
             console.log('A user connected')
             socket.on('active', (data) => {
+                const cookies = cookie.parse(socket.handshake.headers.cookie)
+                const userData = Auth.validateToken(cookies.token)
+                console.log(userData)
                 socket.idUser = data
                 users.push({
                     idUser: data,
@@ -23,7 +28,8 @@ class Chat {
                 io.emit('user disconnected', users)
             })
 
-            socket.on('send message', (message) => {
+            socket.on('send message', (idSocket, message) => {
+                socket.to(idSocket)
                 messages.push(message)
                 io.emit('res message', message)
             })
