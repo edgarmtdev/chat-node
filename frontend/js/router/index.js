@@ -1,7 +1,7 @@
 'use strict'
 
 import { Chat, addEvents } from "../components/chat.js"
-import { Login } from "../components/login.js"
+import { auth, Login } from "../components/login.js"
 
 const root = document.getElementById('root')
 
@@ -14,7 +14,8 @@ const router = (path) => {
             return addEvents()
         case '#/login':
             console.log(path);
-            return root.appendChild(Login())
+            root.appendChild(Login())
+            return auth()
     }
 }
 

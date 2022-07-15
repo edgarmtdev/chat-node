@@ -39,3 +39,32 @@ function createElement(type, { attrs, content }) {
     element.innerText = content
     return element
 }
+
+export function auth() {
+    const authLogin = document.getElementById('login')
+    authLogin.addEventListener('submit', (event) => {
+        event.preventDefault()
+        const { email: { value: email }, password: { value: password } } = event.target
+
+        login({email, password})
+    })
+}
+
+
+
+function login(data) {
+    fetch('http://localhost:4000/api/auth/signin', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+        .then(res => {
+            if (res.ok) return res.json()
+            throw new Error('No session')
+        }).then(data => {
+            console.log(data)
+        }).catch(err => console.log(err.message))
+}
