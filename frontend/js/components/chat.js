@@ -4,11 +4,9 @@ const socket = io.connect('http://localhost:4000/', {
     withCredentials: true
 })
 
+const activeUsers = document.getElementById('actives')
+
 const chat = `
-    <aside id="active-users" class="container_users">
-        <h1>Active Users</h1>
-        <ul id="actives"></ul>
-    </aside>
     <form id="online">
         <input type="text" name="username" placeholder="Username">
         <button>Connect</button>
@@ -17,6 +15,7 @@ const chat = `
     <div class="container_write">
     <form id="messages">
         <input type="text" name="message" placeholder="Write...">
+        <input type="text" name="idSocket" placeholder="Socket">
         <button>Send</button>
     </form>
 </div>
@@ -33,7 +32,6 @@ export const addEvents = () => {
     const online = document.getElementById('online')
     const messages = document.getElementById('messages')
     const chatCont = document.getElementById('chat')
-    const activeUsers = document.getElementById('actives')
 
     online.addEventListener('submit', (event) => {
         event.preventDefault()
@@ -43,26 +41,43 @@ export const addEvents = () => {
     })
 
     socket.on('user connected', (users) => {
-        console.log(users);
-        activeUsers.innerHTML = ''
-        users.forEach(user => {
-            const li = document.createElement('li')
-            li.innerText = user.idUser
-            activeUsers.appendChild(li)
-        });
+        renderUsers(users)
     })
 
     messages.addEventListener('submit', (event) => {
         event.preventDefault()
-        const { message } = event.target
+        const { message, idSocket } = event.target
         console.log(message.value);
-        socket.emit('send message', message.value)
+        socket.emit('send message', idSocket.value, message.value)
         message.value = ''
+        idSocket.value = ''
     })
 
     socket.on('res message', (message) => {
         const li = document.createElement('li')
         li.innerText = message
         chatCont.appendChild(li)
+    })
+
+    socket.on('user disconnected', (users) => {
+        renderUsers(users)
+    })
+
+    socket.on('private send message', chats => {
+        console.log(chats);
+    })
+
+    socket.on('message sended', chats => {
+        console.log(chats);
+    })
+}
+
+function renderUsers(users) {
+    console.log(users);
+    activeUsers.innerHTML = ''
+    users.forEach(user => {
+        const li = document.createElement('li')
+        li.innerText = user.idUser
+        activeUsers.appendChild(li)
     })
 }

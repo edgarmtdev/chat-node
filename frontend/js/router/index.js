@@ -9,11 +9,9 @@ const router = (path) => {
     root.innerHTML = ''
     switch (path) {
         case '#/':
-            console.log(path);
             root.appendChild(Chat())
             return addEvents()
         case '#/login':
-            console.log(path);
             root.appendChild(Login())
             return auth()
     }
