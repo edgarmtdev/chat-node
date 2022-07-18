@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import Auth from '../services/auth'
 import setCookies from '../helpers/authentication/cookies'
+import { authResponse } from '../middlewares/auth/response'
 
 export default function auth(app) {
     const router = Router()
@@ -26,4 +27,11 @@ export default function auth(app) {
         return res.json(result)
     })
 
+    router.get('/validate',
+        authResponse(1),
+        async (req, res) => res.json({
+            logged: true,
+            user: req.user
+        })
+    )
 }

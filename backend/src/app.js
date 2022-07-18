@@ -1,6 +1,7 @@
 import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
+import cookie from 'cookie-parser' 
 import pkg from '../package.json'
 
 const app = express()
@@ -22,6 +23,7 @@ app.use(cors({
 //Midlewares
 app.use(morgan('dev'))
 app.use(express.json())
+app.use(cookie())
 
 // Use Routes
 auth(app)
