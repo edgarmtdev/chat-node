@@ -1,16 +1,8 @@
 'use strict'
 
-const socket = io.connect('http://localhost:4000/', {
-    withCredentials: true
-})
-
 const activeUsers = document.getElementById('actives')
 
 const chat = `
-    <form id="online">
-        <input type="text" name="username" placeholder="Username">
-        <button>Connect</button>
-    </form>
     <section id="chat"></section>
     <div class="container_write">
     <form id="messages">
@@ -29,16 +21,20 @@ export const Chat = () => {
 
 
 export const addEvents = () => {
+
+    const socket = io.connect('http://localhost:4000/', {
+        withCredentials: true
+    })
+
     const online = document.getElementById('online')
     const messages = document.getElementById('messages')
     const chatCont = document.getElementById('chat')
 
-    online.addEventListener('submit', (event) => {
-        event.preventDefault()
-        const { username } = event.target
-        socket.emit('active', username.value)
-        username.value = ''
-    })
+    // online.addEventListener('submit', (event) => {
+    //     event.preventDefault()
+
+    //     username.value = ''
+    // })
 
     socket.on('user connected', (users) => {
         renderUsers(users)
@@ -77,7 +73,12 @@ function renderUsers(users) {
     activeUsers.innerHTML = ''
     users.forEach(user => {
         const li = document.createElement('li')
-        li.innerText = user.idUser
+        li.innerText = user.name
         activeUsers.appendChild(li)
     })
 }
+
+//    <form id="online">
+// <input type="text" name="username" placeholder="Username">
+// <button>Connect</button>
+//     </form>
