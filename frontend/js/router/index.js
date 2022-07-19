@@ -14,6 +14,8 @@ const router = (path) => {
         case '#/login':
             root.appendChild(Login())
             return auth()
+        case '': 
+            return root.innerHTML = `<div>Hola</>`
     }
 }
 
