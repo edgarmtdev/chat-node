@@ -43,21 +43,17 @@ const userSchema = mongoose.Schema(
         ],
         friendshipReq: [
             {
-                friendId: {
-                    type: mongoose.Types.ObjectId,
-                    ref: 'user'
-                }
+                type: mongoose.Types.ObjectId,
+                ref: 'user'
             }
         ],
         friendshipRec: [
             {
-                friendId: {
-                    type: mongoose.Types.ObjectId,
-                    ref: 'user'
-                }
+                type: mongoose.Types.ObjectId,
+                ref: 'user'
             }
         ],
     }
 )
 
-export default mongoose.model('User', userSchema)
+export default mongoose.model('user', userSchema)
