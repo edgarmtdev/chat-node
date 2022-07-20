@@ -12,4 +12,4 @@ const server = app.listen(PORT, () => {
 })
 
 // Chat route
-chat(server)
+chat(app, server)

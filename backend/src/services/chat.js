@@ -1,64 +1,80 @@
 import cookie from 'cookie'
 import Auth from './auth'
-let users = new Array()
+import chatModel from '../models/chat'
 let chats = []
 let messages = []
+let users = []
 
 class Chat {
     constructor(io) {
         this.io = io
-        this.io.on('connection', (socket) => {
-            const cookies = cookie.parse(socket.handshake.headers.cookie)
-            const userData = Auth.validateToken(cookies.token)
-            console.log(users);
-            if (userData) {
+        if (io) {
+            this.io.on('connection', (socket) => {
+                const { token } = cookie.parse(socket.handshake.headers.cookie)
+                if (token) {
+                    const userData = Auth.validateToken(token)
+                    socket.on('online', () => {
+                        socket.user = userData
 
-                // socket.idUser = data
-                socket.user = userData
-                users.push({
-                    ...userData,
-                    idSocket: socket.id
-                })
-                
-                io.emit('user connected', users)
+                        const user = users.find(user => user.id === userData.id)
+                        if (!user) {
+                            users.push({
+                                ...userData,
+                                idSocket: socket.id
+                            })
+                        }
 
-                socket.on('disconnect', () => {
-                    console.log('Disconnect');
-                    users = users.filter(user => user.idUser !== socket.idUser)
-                    console.log(users)
-                    io.emit('user disconnected', users)
-                })
+                        io.emit('user connected', users)
+                    })
 
-                socket.on('send message', (idSocket, message) => {
-                    const idChat = socket.idUser + idSocket
-                    const newChat = {
-                        id: idChat,
-                        sender: socket.user.id,
-                        received: idSocket,
-                        messages: [...messages, message]
-                    }
+                    socket.on('disconnect', () => {
+                    })
+                    socket.on('disconnected', () => {
+                        console.log('Disconnect');
+                        users = users.filter(user => user.idUser !== socket.idUser)
+                        io.emit('user disconnected', users)
+                    })
 
-                    if (chats.length === 0) {
-                        chats.push(newChat)
-                        console.log(chats);
-                        socket.to(idSocket).emit('private send message', newChat)
-                        io.to(socket.idUser).emit('message sended', newChat)
-                    } else {
-                        chats.forEach(chat => {
-                            if (chat.id === idChat) {
-                                chat.messages.push(message)
-                                socket.to(idSocket).emit('private send message', chat)
-                                io.to(socket.idUser).emit('message sended', chat)
-                            } else {
-                                chats.push(newChat)
-                                socket.to(idSocket).emit('private send message', chat)
-                                io.to(socket.idUser).emit('message sended', chat)
-                            }
-                        })
-                    }
-                })
-            }
-        })
+                    socket.on('send message', (idSocket, message) => {
+                        const idChat = socket.idUser + idSocket
+                        const newChat = {
+                            id: idChat,
+                            sender: socket.user.id,
+                            received: idSocket,
+                            messages: [...messages, message]
+                        }
+
+                        if (chats.length === 0) {
+                            chats.push(newChat)
+                            console.log(chats);
+                            socket.to(idSocket).emit('private send message', newChat)
+                            io.to(socket.idUser).emit('message sended', newChat)
+                        } else {
+                            chats.forEach(chat => {
+                                if (chat.id === idChat) {
+                                    chat.messages.push(message)
+                                    socket.to(idSocket).emit('private send message', chat)
+                                    io.to(socket.idUser).emit('message sended', chat)
+                                } else {
+                                    chats.push(newChat)
+                                    socket.to(idSocket).emit('private send message', chat)
+                                    io.to(socket.idUser).emit('message sended', chat)
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    }
+
+    async newChat(data) {
+        try {
+            const chat = chatModel.create(data)
+            return chat
+        } catch (error) {
+
+        }
     }
 }
 

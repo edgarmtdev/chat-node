@@ -1,8 +1,13 @@
 import mongoose from 'mongoose';
 import hasErrors from '../helpers/errors'
 import UserModel from '../models/user'
+import Chat from './chat';
 
 class User {
+
+    constructor() {
+        this.chatService = new Chat()
+    }
 
     #convertID(data) {
         return new mongoose.Types.ObjectId(data)
@@ -97,14 +102,20 @@ class User {
             {
                 $push: {
                     friends: this.#convertID(idUser)
-                }, 
+                },
                 $pull: {
                     friendshipReq: this.#convertID(idUser)
                 }
             },
             { new: true }
         )
+        const chat = await this.chatService.newChat({
+            idUserOne: idSender,
+            idUserTwo: idUser
+        })
+        console.log(chat);
         return {
+            friends: user.friends,
             receivedRec: user.friendshipRec,
             sendedReq: user.friendshipReq
         }

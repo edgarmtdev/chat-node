@@ -30,8 +30,11 @@ const chatSchema = mongoose.Schema(
             type: mongoose.Types.ObjectId,
             ref: 'user'
         },
-        messages: [messageSchema]
+        messages: {
+            type: [messageSchema],
+            default: []
+        }
     }
 )
 
-export default mongoose.model('message', chatSchema)
+export default mongoose.model('chat', chatSchema)

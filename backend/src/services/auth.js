@@ -51,7 +51,10 @@ class Auth {
                 message: 'User not found'
             }
 
-            const compare = await this.#compare(password, user.password)
+            const compare = await this.#compare(
+                password,
+                user.password
+            )
             if (compare) return this.#buildUserData(user)
 
             return result
@@ -67,12 +70,8 @@ class Auth {
                 data.password = await this.#encrypt(data.password)
             }
             const result = await this.userService.create(data)
-            console.log(result);
-
-            if (result.success) return this.#buildUserData(result.user)
-
-            return result
-
+            if (!result.success) return result
+            return this.#buildUserData(result.user)
         } catch (error) {
             return error
         }
