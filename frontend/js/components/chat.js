@@ -20,11 +20,7 @@ export const Chat = () => {
 }
 
 
-export const addEvents = () => {
-
-    const socket = io.connect('http://localhost:4000/', {
-        withCredentials: true
-    })
+export const addEvents = (socket) => {
 
     const online = document.getElementById('online')
     const messages = document.getElementById('messages')

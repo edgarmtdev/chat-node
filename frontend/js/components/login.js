@@ -1,5 +1,8 @@
 'use strict'
 
+import login from "../api/auth/login.js"
+import createElement from "../libs/ui/createElems.js"
+
 export const Login = () => {
     const login = document.createElement('form')
     login.id = 'login'
@@ -31,14 +34,7 @@ export const Login = () => {
     return login
 }
 
-function createElement(type, { attrs, content }) {
-    const element = document.createElement(type)
-    attrs.forEach(attr => {
-        element.setAttribute(attr.name, attr.value)
-    })
-    element.innerText = content
-    return element
-}
+ 
 
 export function auth() {
     const authLogin = document.getElementById('login')
@@ -48,23 +44,4 @@ export function auth() {
 
         login({email, password})
     })
-}
-
-
-
-function login(data) {
-    fetch('http://localhost:4000/api/auth/signin', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    })
-        .then(res => {
-            if (res.ok) return res.json()
-            throw new Error('No session')
-        }).then(data => {
-            console.log(data)
-        }).catch(err => console.log(err.message))
 }
