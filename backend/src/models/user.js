@@ -35,10 +35,8 @@ const userSchema = mongoose.Schema(
         },
         friends: [
             {
-                friendId: {
-                    type: mongoose.Types.ObjectId,
-                    ref: 'user'
-                }
+                type: mongoose.Types.ObjectId,
+                ref: 'user'
             }
         ],
         friendshipReq: [

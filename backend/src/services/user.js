@@ -4,13 +4,17 @@ import UserModel from '../models/user'
 
 class User {
 
+    #convertID(data) {
+        return new mongoose.Types.ObjectId(data)
+    }
+
     async getAll() {
         try {
             return await UserModel.find()
-              .populate("friendshipReq")
-              .populate("friendshipRec")
-              .populate("friends");
-     
+                .populate('friendshipReq', ['name', 'email'])
+                .populate('friendshipRec', ['name', 'email'])
+                .populate('friends', ['name', 'email']);
+
         } catch (error) {
             console.log(error);
         }
@@ -19,11 +23,13 @@ class User {
     async getByEmail(email) {
         try {
             const userFound = await UserModel.findOne({ email })
+                .populate('friendshipReq', ['name', 'email'])
+                .populate('friendshipRec', ['name', 'email'])
+                .populate('friends', ['name', 'email']);
             if (userFound) return {
                 success: true,
                 user: userFound
             }
-
             return { success: false }
         } catch (error) {
             console.log(error);
@@ -44,31 +50,63 @@ class User {
 
     async sendRequest(idUser, idFriend) {
         try {
-
-            console.log(idUser, idFriend);
-
             const user = await UserModel.findByIdAndUpdate(
                 { _id: idUser },
                 {
-                    $push: { friendshipReq: new mongoose.Types.ObjectId(idFriend) }
+                    $push: {
+                        friendshipReq: this.#convertID(idFriend)
+                    }
                 },
                 { new: true }
             )
-            // const friend =
             await UserModel.findByIdAndUpdate(
                 { _id: idFriend },
                 {
-                    $push: { friendshipRec: new mongoose.Types.ObjectId(idUser) }
+                    $push: {
+                        friendshipRec: this.#convertID(idUser)
+                    }
                 },
                 { new: true }
             )
 
             return {
+                friends: user.friends,
                 receivedRec: user.friendshipRec,
                 sendedReq: user.friendshipReq
             }
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    async acceptRequest(idUser, idSender) {
+        const user = await UserModel.findByIdAndUpdate(
+            { _id: idUser },
+            {
+                $push: {
+                    friends: this.#convertID(idSender)
+                },
+                $pull: {
+                    friendshipRec: this.#convertID(idSender)
+                }
+            },
+            { new: true }
+        )
+        await UserModel.findByIdAndUpdate(
+            { _id: idSender },
+            {
+                $push: {
+                    friends: this.#convertID(idUser)
+                }, 
+                $pull: {
+                    friendshipReq: this.#convertID(idUser)
+                }
+            },
+            { new: true }
+        )
+        return {
+            receivedRec: user.friendshipRec,
+            sendedReq: user.friendshipReq
         }
     }
 }

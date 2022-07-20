@@ -11,9 +11,20 @@ export default function user(app) {
         return res.json(users)
     })
 
-    router.post('/addfriend', async (req, res) => {
+    router.get('/one', async (req, res) => {
+        const user = await userService.getByEmail(req.query.email)
+        return res.json(user)
+    })
+
+    router.post('/send-request', async (req, res) => {
         const { idUser, idFriend } = req.body
         const user = await userService.sendRequest(idUser, idFriend)
+        return res.json(user)
+    })
+
+    router.post('/accept-request', async (req, res) => {
+        const { idUser, idSender } = req.body
+        const user = await userService.acceptRequest(idUser, idSender)
         return res.json(user)
     })
 }
