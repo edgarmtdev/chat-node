@@ -68,6 +68,20 @@ class Chat {
         }
     }
 
+    async getChats(idUser) {
+        try {
+            const chats = await chatModel.find({
+                $or: [{ idUserOne: idUser }, { idUserTwo: idUser }]
+            })
+            return {
+                success: true,
+                chats
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     async newChat(data) {
         try {
             const chat = chatModel.create(data)

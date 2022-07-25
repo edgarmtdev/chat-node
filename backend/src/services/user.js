@@ -109,11 +109,10 @@ class User {
             },
             { new: true }
         )
-        const chat = await this.chatService.newChat({
+        await this.chatService.newChat({
             idUserOne: idSender,
             idUserTwo: idUser
         })
-        console.log(chat);
         return {
             friends: user.friends,
             receivedRec: user.friendshipRec,
