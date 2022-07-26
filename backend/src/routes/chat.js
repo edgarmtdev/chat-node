@@ -16,6 +16,12 @@ function chat(app, server) {
         const chats = await chatService.getChats(idUser)
         return res.json(chats)
     })
+
+    router.get('/:idUser/:idFriend', async (req, res) => {
+        const { idUser, idFriend } = req.params
+        const chat = await chatService.getChat(idUser, idFriend)
+        return res.json(chat)
+    })
 }
 
 export default chat
