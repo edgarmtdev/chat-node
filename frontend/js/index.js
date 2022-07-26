@@ -10,3 +10,8 @@ window.onload = async () => {
         router(path)
     }
 }
+
+window.addEventListener('beforeunload', (event) => {
+    event.preventDefault()
+    confirm('Secure?')
+})

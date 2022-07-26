@@ -20,7 +20,8 @@ const router = async (path) => {
             return auth()
         case '#/people':
             const users = await getUsers()
-            if (users.length > 0) {
+            console.log(users);
+            if (users) {
                 return root.appendChild(Users(users))
             }
         case '':

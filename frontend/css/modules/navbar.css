@@ -1,0 +1,36 @@
+.navbar {
+    background-color: #212121;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.navbar h4 a {
+    color: white;
+}
+
+.navbar h4 a:hover {
+    transition: .5s;
+    color: #aaa;
+}
+
+.navbar-nav_title {
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.navbar-nav_links {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.link a {
+    color: white;
+}
+
+.link a:hover {
+    transition: .5s;
+    color: #aaa;
+}

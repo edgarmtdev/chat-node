@@ -11,8 +11,6 @@ async function validate() {
 
     const data = await res.json()
 
-    console.log(data);
-
     let socket
 
     if (data.logged) {

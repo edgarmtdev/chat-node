@@ -12,7 +12,7 @@ export default function Users(users) {
             attrs: [
                 { name: 'class', value: 'section-users_card' },
             ],
-            content: user.name + ' ' + user.email
+            content: user.name
         })
         sectionUsers.appendChild(card)
     });

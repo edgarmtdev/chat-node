@@ -7,6 +7,5 @@ export default async function getUsers() {
         }
     })
     const users = await res.json()
-    console.log(users);
     return users
 }
