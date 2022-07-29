@@ -26,12 +26,6 @@ export const addEvents = (socket) => {
     const messages = document.getElementById('messages')
     const chatCont = document.getElementById('chat')
 
-    // online.addEventListener('submit', (event) => {
-    //     event.preventDefault()
-
-    //     username.value = ''
-    // })
-
     socket.on('user connected', (users) => {
         renderUsers(users)
     })
@@ -69,12 +63,14 @@ function renderUsers(users) {
     activeUsers.innerHTML = ''
     users.forEach(user => {
         const li = document.createElement('li')
+
         li.innerText = user.name
+
+        li.classList.add('user')
+        
+        li.onclick = () => {
+            window.location.hash = `/t/${user.idSocket}`
+        }
         activeUsers.appendChild(li)
     })
 }
-
-//    <form id="online">
-// <input type="text" name="username" placeholder="Username">
-// <button>Connect</button>
-//     </form>

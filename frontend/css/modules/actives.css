@@ -1,0 +1,23 @@
+.container_users{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 30%;
+    height: 100vh;
+    background-color: #212121;
+    color: white;
+}
+
+#actives {
+    list-style: none;
+    padding: 0;
+}
+
+.user {
+    padding: 16px 20px;
+    cursor: pointer;
+}
+
+.user:hover {
+    background-color: black;
+}

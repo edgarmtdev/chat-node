@@ -9,21 +9,22 @@ import Users from "../components/users.js"
 const root = document.getElementById('root')
 
 const router = async (path) => {
+    const [socket, user] = await validate()
     root.innerHTML = ''
     switch (path) {
         case '#/':
             root.appendChild(Chat())
-            const [socket, user] = await validate()
             if (user.logged) return addEvents(socket)
         case '#/login':
             root.appendChild(Login())
             return auth()
         case '#/people':
             const users = await getUsers()
-            console.log(users);
             if (users) {
                 return root.appendChild(Users(users))
             }
+        case `#/t/`: 
+            return
         case '':
             return root.innerHTML = `<div>Hola</>`
     }
