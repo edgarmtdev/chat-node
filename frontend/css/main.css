@@ -1,5 +1,7 @@
 @import './modules/navbar.css';
 @import './modules/actives.css';
+@import './modules/login.css';
+@import './modules/chat.css';
 
 * {
     box-sizing: border-box;
@@ -21,39 +23,4 @@ a:link,
 a:visited,
 a:hover {
     text-decoration: none;
-}
-
-.container_write{
-    background-color: #212121;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-}
-
-#messages{
-    padding: 16px;
-}
-
-#chat {
-    width: 65%;
-    height: 90vh;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-}
-
-#chat li {
-    padding: 10px;
-    border-radius: 10px;
-    background-color: rgb(244, 244, 244);
-    margin-left: auto;
-    display: inline-block;
-}
-
-#chat > li:nth-child(odd) { 
-    background: #f67a7a;
-    margin-left: 0;
-    margin-right: auto;
-    display: inline-block;
 }
