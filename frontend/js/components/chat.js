@@ -1,7 +1,5 @@
 'use strict'
 
-const activeUsers = document.getElementById('actives')
-
 const chat = `
     <section id="chat"></section>
     <div class="container_write">
@@ -26,11 +24,8 @@ export const addEvents = (socket) => {
     const messages = document.getElementById('messages')
     const chatCont = document.getElementById('chat')
 
-    socket.on('user connected', (users) => {
-        renderUsers(users)
-    })
-
     messages.addEventListener('submit', (event) => {
+        console.log(usersActive);
         event.preventDefault()
         const { message, idSocket } = event.target
         console.log(message.value);
@@ -45,32 +40,11 @@ export const addEvents = (socket) => {
         chatCont.appendChild(li)
     })
 
-    socket.on('user disconnected', (users) => {
-        renderUsers(users)
-    })
-
     socket.on('private send message', chats => {
         console.log(chats);
     })
 
     socket.on('message sended', chats => {
         console.log(chats);
-    })
-}
-
-function renderUsers(users) {
-    console.log(users);
-    activeUsers.innerHTML = ''
-    users.forEach(user => {
-        const li = document.createElement('li')
-
-        li.innerText = user.name
-
-        li.classList.add('user')
-        
-        li.onclick = () => {
-            window.location.hash = `/t/${user.idSocket}`
-        }
-        activeUsers.appendChild(li)
     })
 }

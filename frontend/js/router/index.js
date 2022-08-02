@@ -4,34 +4,44 @@ import validate from "../api/auth/validate.js"
 import getUsers from "../api/data/users.js"
 import { Chat, addEvents } from "../components/chat.js"
 import { auth, Login } from "../components/login.js"
+import { Actives } from "../components/aside.js";
 import Users from "../components/users.js"
 
 const root = document.getElementById('root')
 const usersActives = document.getElementById('active-users')
 
+const params = /[#\/a-zA-Z0-9]{28,30}/
+
 const router = async (path) => {
+    const regex = params.test(path)
+    console.log(regex);
     const [socket, user] = await validate()
     root.innerHTML = ''
-    switch (path) {
-        case '#/':
-            usersActives.style.display = 'block'
-            root.appendChild(Chat())
-            if (user.logged) return addEvents(socket)
-        case '#/login':
-            usersActives.style.display = 'none'
-            root.appendChild(Login())
-            return auth()
-        case '#/people':
-            usersActives.style.display = 'block'
-            const users = await getUsers()
-            if (users) {
-                return root.appendChild(Users(users))
-            }
-        case `#/t/`: 
-            return
-        case '':
-            usersActives.style.display = 'none'
-            return root.innerText = `Inicio`
+
+    if (regex) {
+        Actives(socket, usersActives)
+        usersActives.style.display = 'block'
+        root.appendChild(Chat())
+        if (user.logged) return addEvents(socket)
+    } else {
+        switch (path) {
+            case '#/':
+                usersActives.style.display = 'block'
+                return Actives(socket, usersActives)
+            case '#/login':
+                usersActives.style.display = 'none'
+                root.appendChild(Login())
+                return auth()
+            case '#/people':
+                usersActives.style.display = 'block'
+                const users = await getUsers()
+                if (users) {
+                    return root.appendChild(Users(users))
+                }
+            case '':
+                usersActives.style.display = 'none'
+                return root.innerText = `Inicio`
+        }
     }
 }
 
