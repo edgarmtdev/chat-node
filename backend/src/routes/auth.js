@@ -14,7 +14,7 @@ export default function auth(app) {
             const { token, data } = result
             return setCookies(res, token, data)
         }
-        return res.json(result)
+        return res.status(401).json(result)
     })
 
     router.post('/register', async (req, res) => {
