@@ -1,5 +1,9 @@
 'use strict'
 
+const idFriend = document.location.hash.split('/')[2]
+let socketFriend = document.location.hash.split('/')[3]
+console.log(socketFriend);
+
 const chat = `
     <section id="chat"></section>
     <div class="container_write">
@@ -19,17 +23,12 @@ export const Chat = () => {
 
 
 export const addEvents = (socket) => {
-
-    const online = document.getElementById('online')
     const messages = document.getElementById('messages')
     const chatCont = document.getElementById('chat')
-
     messages.addEventListener('submit', (event) => {
-        console.log(usersActive);
         event.preventDefault()
         const { message, idSocket } = event.target
-        console.log(message.value);
-        socket.emit('send message', idSocket.value, message.value)
+        socket.emit('send message', socketFriend, idFriend, message.value)
         message.value = ''
         idSocket.value = ''
     })
@@ -40,11 +39,11 @@ export const addEvents = (socket) => {
         chatCont.appendChild(li)
     })
 
-    socket.on('private send message', chats => {
-        console.log(chats);
+    socket.on('private send message', message => {
+        console.log(message);
     })
 
-    socket.on('message sended', chats => {
-        console.log(chats);
+    socket.on('message sended', message => {
+        console.log(message);
     })
 }

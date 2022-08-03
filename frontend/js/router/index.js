@@ -14,12 +14,10 @@ const params = /[#\/a-zA-Z0-9]{28,30}/
 
 const router = async (path) => {
     const regex = params.test(path)
-    console.log(regex);
     const [socket, user] = await validate()
     root.innerHTML = ''
-
     if (regex) {
-        Actives(socket, usersActives)
+        Actives(socket)
         usersActives.style.display = 'block'
         root.appendChild(Chat())
         if (user.logged) return addEvents(socket)
@@ -27,17 +25,17 @@ const router = async (path) => {
         switch (path) {
             case '#/':
                 usersActives.style.display = 'block'
-                return Actives(socket, usersActives)
+                Actives(socket)
+                return
             case '#/login':
                 usersActives.style.display = 'none'
                 root.appendChild(Login())
                 return auth()
             case '#/people':
-                usersActives.style.display = 'block'
                 const users = await getUsers()
-                if (users) {
-                    return root.appendChild(Users(users))
-                }
+                usersActives.style.display = 'block'
+                return root.appendChild(Users(users))
+
             case '':
                 usersActives.style.display = 'none'
                 return root.innerText = `Inicio`

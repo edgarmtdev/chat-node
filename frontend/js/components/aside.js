@@ -1,14 +1,13 @@
+const aside = document.getElementById('active-users')
 const activeUsers = document.getElementById('actives')
-let usersActive = []
 
-export const Actives = (socket, root) => {
+export const Actives = (socket) => {
     socket.on('user connected', (users) => {
-        usersActive = users
-        root.appendChild(renderUsers(users))
+        aside.appendChild(renderUsers(users))
     })
 
     socket.on('user disconnected', (users) => {
-        root.appendChild(renderUsers(users))
+        aside.appendChild(renderUsers(users))
     })
 }
 
@@ -19,9 +18,8 @@ export function renderUsers(users) {
 
         li.innerText = user.name
         li.classList.add('user')
-        li.onclick = () => {
-            window.location.hash = `/t/${user.id}`
-        }
+        li.onclick = () => window.location.hash = `/t/${user.id}/${user.idSocket}`
+        
         activeUsers.appendChild(li)
     })
     return activeUsers
